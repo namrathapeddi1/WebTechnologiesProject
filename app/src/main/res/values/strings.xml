@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Web Technologies Project</string>
+    <string name="edit_message">Please enter stock ticker symbol</string>
+    <string name="button_send">Get Quote</string>
+    <string-array name="items">
+        <item>Stock Symbol</item>
+        <item>Open</item>
+        <item>Last Price</item>
+        <item>Close</item>
+        <item>Volume</item>
+        <item> Timestamp </item>
+        <item>Days Range</item>
+        <item>Change</item>
+
+    </string-array>
+    <string-array name="menu">
+        <item>Remove from Favorites?</item>
+        <item>No</item>
+        <item>Yes</item>
+    </string-array>
+    <string name="title_activity_tabbed">TabbedActivity</string>
+    <string name="tab_text_1">CURRENT STOCK</string>
+    <string name="tab_text_2">HISTORY</string>
+    <string name="tab_text_3">NEWS</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+</resources>

@@ -1,0 +1,986 @@
+<html>
+<head>
+    <script src = "https://code.highcharts.com/highcharts.js"></script>
+    <script>
+		function first(var4,myjsvar) {
+			var xmlhttp = new XMLHttpRequest();
+			var url = "https://www.alphavantage.co/query?function="+var4+"&symbol="+myjsvar+"&interval=daily&time_period=10&series_type=open&apikey=BVFQG1A5Y8XQTOQG";
+			xmlhttp.onreadystatechange = function() {
+			    if (this.readyState == 4 && this.status == 200) {
+
+			        var arr = JSON.parse(this.responseText);
+			        myFunction(arr,var4,myjsvar);
+			    }
+			}
+
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send();
+
+
+		}
+
+		function myFunction(arr,var4,myjsvar){
+
+
+		if(var4 == 'SMA') {
+
+
+var6 =  arr["Technical Analysis: SMA"];
+
+ //document.write(var7);
+ resultj= [];
+ resultl = [];
+
+   for(each in var6){
+      resultl.push(var6[each]["SMA"]);
+      resultj.push(each);
+   }
+//document.write(resultj);
+ resDate = resultj.slice(0,120);
+ resSMA = resultl.slice(0,120);
+ resDate1 = [];
+ resSMA1 = [];
+ resDate2=[];
+
+ for(q=0;q<resDate.length;q++){
+   temp2 = resDate[q].slice(5,7);
+   temp3 = resDate[q].slice(8,11);
+   resDate2[q]= temp2 + '-' + temp3;
+
+ }
+  resDate1 = resDate2.reverse();
+ resSMA1 = resSMA.map(parseFloat).reverse();
+
+
+      new Highcharts.Chart({
+        chart: {
+            renderTo: document.getElementsByClassName("container")[0]
+
+        },
+         title: {
+            text: 'Simple Moving Average (SMA)'
+        },
+        subtitle: {
+
+            text: '<a href="https://www.alphavantage.co/">Source: Aplha Vantage </a>'
+        },
+        plotOptions: {
+    series: {
+        marker: {
+            enabled: true,
+            symbol: 'circle',
+
+            radius: 2
+        }
+    }
+},
+
+        yAxis: {
+         tickInterval : 3.5,
+
+        labels: {
+
+            style: {
+                color: Highcharts.getOptions().colors[1],
+
+            }
+        },
+        title: {
+
+            text: 'SMA',
+            style: {
+                color: Highcharts.getOptions().colors[1]
+            }
+        }
+
+    },
+    legend: {
+
+        align: 'center',
+        verticalAlign: 'bottom',
+        x: 0,
+
+        y: 0,
+        floating: false,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+    },
+
+        xAxis: {
+
+        rotation: 45,
+        tickInterval: 5,
+        categories: resDate2
+
+    },
+
+
+        series: [{
+            type: 'line',
+            name: myjsvar,
+            color: '#ff8080',
+
+            data: resSMA1
+
+
+
+        }]
+    });
+
+   }
+   else if(var4 == 'EMA'){
+
+      var6 = arr["Technical Analysis: EMA"];
+
+ resultj = [];
+ resultl = [];
+
+   for(each in var6){
+      resultl.push(var6[each]["EMA"]);
+      resultj.push(each);
+
+   }
+ resDate = resultj.slice(0,120);
+ resSMA = resultl.slice(0,120);
+ resDate1 = [];
+ resSMA1 = [];
+ resDate2 = [];
+ resSMA1 = resSMA.map(parseFloat).reverse();
+ for(q=0;q<resDate.length;q++){
+   //document.write(resDate[q].slice(5,));
+   temp2 = resDate[q].slice(5,7);
+   //document.write(temp2);
+   temp3 = resDate[q].slice(8,11);
+   //document.write(temp3);
+   resDate2[q]= temp2 + '-' + temp3;
+   //document.write(resDate2[q]);
+ }
+  resDate1 = resDate2.reverse();
+
+      new Highcharts.Chart({
+        chart: {
+            renderTo: document.getElementsByClassName("container")[0]
+
+        },
+         title: {
+            text: 'Exponential Moving Average (EMA)'
+        },
+        subtitle: {
+
+            text: '<a href="https://www.alphavantage.co/">Source: Aplha Vantage </a>'
+        },
+        plotOptions: {
+    series: {
+        marker: {
+            enabled: true,
+            symbol: 'circle',
+            radius: 2
+        }
+    }
+},
+
+        yAxis: {
+         tickInterval : 3.5,
+
+        labels: {
+
+            style: {
+                color: Highcharts.getOptions().colors[1],
+
+            }
+        },
+        title: {
+
+            text: 'EMA',
+            style: {
+                color: Highcharts.getOptions().colors[1]
+            }
+        }
+
+    },
+    legend: {
+
+        align: 'center',
+        verticalAlign: 'bottom',
+        x: 0,
+
+        y: 0,
+        floating: false,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+    },
+        xAxis: {
+
+        rotation: 45,
+        tickInterval: 5,
+        categories: resDate1
+
+    },
+
+
+        series: [{
+            type: 'line',
+            name: myjsvar,
+            color: '#ff8080',
+
+            data: resSMA1
+
+
+
+        }]
+    });
+
+
+   }
+   else if(var4 == 'STOCH'){
+
+      var6 =  arr["Technical Analysis: STOCH"];
+ //var7 = var6["2017-10-17"];
+
+ resultj= [];
+ resultl = [];
+ resultl2 = [];
+   for(each in var6){
+      resultl.push(var6[each]["SlowK"]);
+      resultl2.push(var6[each]["SlowD"]);
+      resultj.push(each);
+
+   }
+//document.write(resultj);
+ resDate = resultj.slice(0,120);
+ resStoch = resultl2.slice(0,120);
+ resSMA = resultl.slice(0,120);
+ resDate1 = [];
+ resSMA1 = [];
+ resDate2=[];
+
+ //document.write(resDate1);
+ for(q=0;q<resDate.length;q++){
+   //document.write(resDate[q].slice(5,));
+   temp2 = resDate[q].slice(5,7);
+   //document.write(temp2);
+   temp3 = resDate[q].slice(8,11);
+   //document.write(temp3);
+   resDate2[q]= temp2 + '-' + temp3;
+   //document.write(resDate2[q]);
+ }
+  resDate1 = resDate2.reverse();
+ resSMA1 = resSMA.map(parseFloat).reverse();
+ resSMA2 = resStoch.map(parseFloat).reverse();
+ //document.write(resSMA);
+
+
+      new Highcharts.Chart({
+        chart: {
+            renderTo: document.getElementsByClassName("container")[0]
+
+        },
+         title: {
+            text: 'Simple Moving Average (SMA)'
+        },
+        subtitle: {
+
+            text: '<a href="https://www.alphavantage.co/">Source: Aplha Vantage </a>'
+        },
+        plotOptions: {
+    series: {
+        marker: {
+            enabled: true,
+            symbol: 'circle',
+            radius: 2
+        }
+    }
+},
+
+        yAxis: {
+        	slowkmatype: 1,
+        	slowdmatype: 1,
+         tickInterval : 3.5,
+
+        labels: {
+
+            style: {
+                color: Highcharts.getOptions().colors[1],
+
+            }
+        },
+        title: {
+
+            text: 'SMA',
+            style: {
+                color: Highcharts.getOptions().colors[1]
+            }
+        }
+        //min:100,
+        //tickInterval: 8
+
+    },
+    legend: {
+
+        align: 'center',
+        verticalAlign: 'bottom',
+        x: 0,
+
+        y: 0,
+        floating: false,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+    },
+
+        xAxis: {
+        //type: 'datetime',
+
+        //allowDecimals: true,
+        rotation: 45,
+        tickInterval: 5,
+        categories: resDate2
+
+    },
+
+
+        series: [{
+            type: 'line',
+            name: myjsvar + ' SlowK',
+            color: '#ff8080',
+
+            data: resSMA1
+
+
+        },
+        {
+            type: 'line',
+            name: myjsvar + ' SlowD',
+            color: '#0000ff',
+
+            data: resSMA2
+
+
+        }]
+    });
+
+   }
+else if (var4 == 'ADX'){
+
+   var6 =  arr["Technical Analysis: ADX"];
+
+ resultj= [];
+ resultl = [];
+
+   for(each in var6){
+      resultl.push(var6[each]["ADX"]);
+      resultj.push(each);
+      //resultk = resultl.map(ParseFloat);
+      //resultl.push(var6[each]["SMA"]);
+   }
+//document.write(resultj);
+ resDate = resultj.slice(0,120);
+ resSMA = resultl.slice(0,120);
+ resDate1 = [];
+ resSMA1 = [];
+ resDate2=[];
+
+ //document.write(resDate1);
+ for(q=0;q<resDate.length;q++){
+   //document.write(resDate[q].slice(5,));
+   temp2 = resDate[q].slice(5,7);
+   //document.write(temp2);
+   temp3 = resDate[q].slice(8,11);
+   //document.write(temp3);
+   resDate2[q]= temp2 + '-' + temp3;
+   //document.write(resDate2[q]);
+ }
+  resDate1 = resDate2.reverse();
+ resSMA1 = resSMA.map(parseFloat).reverse();
+ //document.write(resSMA);
+
+
+      new Highcharts.Chart({
+        chart: {
+            renderTo: document.getElementsByClassName("container")[0]
+
+        },
+         title: {
+            text: 'Relative Strength Index'
+        },
+        subtitle: {
+
+            text: '<a href="https://www.alphavantage.co/">Source: Aplha Vantage </a>'
+        },
+        plotOptions: {
+    series: {
+        marker: {
+            enabled: true,
+            symbol: 'circle',
+            radius: 2
+        }
+    }
+},
+
+        yAxis: {
+         tickInterval : 3.5,
+
+        labels: {
+
+            style: {
+                color: Highcharts.getOptions().colors[1],
+
+            }
+        },
+        title: {
+
+            text: 'ADX',
+            style: {
+                color: Highcharts.getOptions().colors[1]
+            }
+        }
+        //min:100,
+        //tickInterval: 8
+
+    },
+    legend: {
+
+        align: 'center',
+        verticalAlign: 'bottom',
+        x: 0,
+
+        y: 0,
+        floating: false,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+    },
+
+        xAxis: {
+        //type: 'datetime',
+
+        //allowDecimals: true,
+        rotation: 45,
+        tickInterval: 5,
+        categories: resDate2
+
+    },
+
+
+        series: [{
+            type: 'line',
+            name: myjsvar,
+            color: '#ff8080',
+
+            data: resSMA1
+
+
+
+        }]
+    });
+
+   }
+
+   else if(var4 == 'RSI'){
+
+      var6 =  arr["Technical Analysis: RSI"];
+ var7 = var6["2017-10-17"];
+ //document.write(var7);
+ resultj= [];
+ resultl = [];
+
+   for(each in var6){
+      resultl.push(var6[each]["RSI"]);
+      resultj.push(each);
+      //resultk = resultl.map(ParseFloat);
+      //resultl.push(var6[each]["SMA"]);
+   }
+//document.write(resultj);
+ resDate = resultj.slice(0,120);
+ resSMA = resultl.slice(0,120);
+ resDate1 = [];
+ resSMA1 = [];
+ resDate2=[];
+
+ //document.write(resDate1);
+ for(q=0;q<resDate.length;q++){
+   //document.write(resDate[q].slice(5,));
+   temp2 = resDate[q].slice(5,7);
+   //document.write(temp2);
+   temp3 = resDate[q].slice(8,11);
+   //document.write(temp3);
+   resDate2[q]= temp2 + '-' + temp3;
+   //document.write(resDate2[q]);
+ }
+  resDate1 = resDate2.reverse();
+ resSMA1 = resSMA.map(parseFloat).reverse();
+ //document.write(resSMA);
+
+
+      new Highcharts.Chart({
+        chart: {
+            renderTo: document.getElementsByClassName("container")[0]
+
+        },
+         title: {
+            text: 'Relative Strength Index (RSI)'
+        },
+        subtitle: {
+
+            text: '<a href="https://www.alphavantage.co/">Source: Aplha Vantage </a>'
+        },
+        plotOptions: {
+    series: {
+        marker: {
+            enabled: true,
+            symbol: 'circle',
+            radius: 2
+        }
+    }
+},
+
+        yAxis: {
+         tickInterval : 3.5,
+
+        labels: {
+
+            style: {
+                color: Highcharts.getOptions().colors[1],
+
+            }
+        },
+        title: {
+
+            text: 'RSI',
+            style: {
+                color: Highcharts.getOptions().colors[1]
+            }
+        }
+        //min:100,
+        //tickInterval: 8
+
+    },
+    legend: {
+
+        align: 'center',
+        verticalAlign: 'bottom',
+        x: 0,
+
+        y: 0,
+        floating: false,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+    },
+
+        xAxis: {
+        //type: 'datetime',
+
+        //allowDecimals: true,
+        rotation: 45,
+        tickInterval: 5,
+        categories: resDate2
+
+    },
+
+
+        series: [{
+            type: 'line',
+            name: myjsvar,
+            color: '#ff8080',
+
+            data: resSMA1
+
+
+
+        }]
+    });
+
+   }
+   else if(var4 == 'CCI'){
+var6 =  arr["Technical Analysis: CCI"];
+ var7 = var6["2017-10-17"];
+ //document.write(var7);
+ resultj= [];
+ resultl = [];
+
+   for(each in var6){
+      resultl.push(var6[each]["CCI"]);
+      resultj.push(each);
+      //resultk = resultl.map(ParseFloat);
+      //resultl.push(var6[each]["SMA"]);
+   }
+//document.write(resultj);
+ resDate = resultj.slice(0,120);
+ resSMA = resultl.slice(0,120);
+ resDate1 = [];
+ resSMA1 = [];
+ resDate2=[];
+
+ //document.write(resDate1);
+ for(q=0;q<resDate.length;q++){
+   //document.write(resDate[q].slice(5,));
+   temp2 = resDate[q].slice(5,7);
+   //document.write(temp2);
+   temp3 = resDate[q].slice(8,11);
+   //document.write(temp3);
+   resDate2[q]= temp2 + '-' + temp3;
+   //document.write(resDate2[q]);
+ }
+  resDate1 = resDate2.reverse();
+ resSMA1 = resSMA.map(parseFloat).reverse();
+ //document.write(resSMA);
+
+
+      new Highcharts.Chart({
+        chart: {
+            renderTo: document.getElementsByClassName("container")[0]
+
+        },
+         title: {
+            text: 'Commodity Channel Index (CCI)'
+        },
+        subtitle: {
+
+            text: '<a href="https://www.alphavantage.co/">Source: Aplha Vantage </a>'
+        },
+        plotOptions: {
+    series: {
+        marker: {
+            enabled: true,
+            symbol: 'circle',
+            radius: 2
+        }
+    }
+},
+
+        yAxis: {
+         tickInterval : 3.5,
+
+        labels: {
+
+            style: {
+                color: Highcharts.getOptions().colors[1],
+
+            }
+        },
+        title: {
+
+            text: 'CCI',
+            style: {
+                color: Highcharts.getOptions().colors[1]
+            }
+        }
+        //min:100,
+        //tickInterval: 8
+
+    },
+    legend: {
+
+        align: 'center',
+        verticalAlign: 'bottom',
+        x: 0,
+
+        y: 0,
+        floating: false,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+    },
+
+        xAxis: {
+        //type: 'datetime',
+
+        //allowDecimals: true,
+        rotation: 45,
+        tickInterval: 5,
+        categories: resDate2
+
+    },
+
+
+        series: [{
+            type: 'line',
+            name: myjsvar,
+            color: '#ff8080',
+
+            data: resSMA1
+
+
+
+        }]
+    });
+
+
+   }
+   else if(var4 == 'BBANDS'){
+
+      var6 =  arr["Technical Analysis: BBANDS"];
+ //var7 = var6["2017-10-17"];
+
+ resultj= [];
+ resultl = [];
+ resultl2 = [];
+resultl3=[];
+   for(each in var6){
+      resultl.push(var6[each]["Real Lower Band"]);
+      resultl2.push(var6[each]["Real Middle Band"]);
+      resultl3.push(var6[each]["Real Upper Band"]);
+      resultj.push(each);
+      //resultk = resultl.map(ParseFloat);
+      //resultl.push(var6[each]["SMA"]);
+   }
+//document.write(resultj);
+ resDate = resultj.slice(0,120);
+ resStoch = resultl2.slice(0,120);
+ resSMA = resultl.slice(0,120);
+  resFinal = resultl3.slice(0,120);
+
+ resDate1 = [];
+ resSMA1 = [];
+ resDate2=[];
+
+ //document.write(resDate1);
+ for(q=0;q<resDate.length;q++){
+   //document.write(resDate[q].slice(5,));
+   temp2 = resDate[q].slice(5,7);
+   //document.write(temp2);
+   temp3 = resDate[q].slice(8,11);
+   //document.write(temp3);
+   resDate2[q]= temp2 + '-' + temp3;
+   //document.write(resDate2[q]);
+ }
+  resDate1 = resDate2.reverse();
+ resSMA1 = resSMA.map(parseFloat).reverse();
+ resSMA2 = resStoch.map(parseFloat).reverse();
+ resSMA3 = resFinal.map(parseFloat).reverse();
+ //document.write(resSMA);
+
+
+      new Highcharts.Chart({
+        chart: {
+            renderTo: document.getElementsByClassName("container")[0]
+
+        },
+         title: {
+            text: 'Bollinger Bands  (BBANDS)'
+        },
+        subtitle: {
+
+            text: '<a href="https://www.alphavantage.co/">Source: Aplha Vantage </a>'
+        },
+        plotOptions: {
+    series: {
+        marker: {
+            enabled: true,
+            symbol: 'circle',
+            radius: 2
+        }
+    }
+},
+
+        yAxis: {
+         tickInterval : 3.5,
+
+        labels: {
+
+            style: {
+                color: Highcharts.getOptions().colors[1],
+
+            }
+        },
+        title: {
+
+            text: 'SMA',
+            style: {
+                color: Highcharts.getOptions().colors[1]
+            }
+        }
+        //min:100,
+        //tickInterval: 8
+
+    },
+    legend: {
+
+        align: 'center',
+        verticalAlign: 'bottom',
+        x: 0,
+
+        y: 0,
+        floating: false,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+    },
+
+        xAxis: {
+        //type: 'datetime',
+
+        //allowDecimals: true,
+        rotation: 45,
+        tickInterval: 5,
+        categories: resDate2
+
+    },
+
+
+        series: [{
+            type: 'line',
+            name: myjsvar +' Real Lower Band',
+            color: '#ff8080',
+
+            data: resSMA1
+
+
+        },
+        {
+            type: 'line',
+            name: myjsvar +' Real Middle Band',
+            color: '#0000ff',
+
+            data: resSMA2
+
+
+        },{
+            type: 'line',
+            name: myjsvar +' Real Upper Band',
+            color: 'black',
+
+            data: resSMA3
+
+
+        }]
+    });
+
+   }
+   else if(var4 == 'MACD'){
+
+      var6 =  arr["Technical Analysis: MACD"];
+ //var7 = var6["2017-10-17"];
+
+ resultj= [];
+ resultl = [];
+ resultl2 = [];
+resultl3=[];
+   for(each in var6){
+      resultl.push(var6[each]["MACD_Hist"]);
+      resultl2.push(var6[each]["MACD"]);
+      resultl3.push(var6[each]["MACD_Signal"]);
+      resultj.push(each);
+      //resultk = resultl.map(ParseFloat);
+      //resultl.push(var6[each]["SMA"]);
+   }
+//document.write(resultj);
+ resDate = resultj.slice(0,120);
+ resStoch = resultl2.slice(0,120);
+ resSMA = resultl.slice(0,120);
+  resFinal = resultl3.slice(0,120);
+
+ resDate1 = [];
+ resSMA1 = [];
+ resDate2=[];
+
+ //document.write(resDate1);
+ for(q=0;q<resDate.length;q++){
+   //document.write(resDate[q].slice(5,));
+   temp2 = resDate[q].slice(5,7);
+   //document.write(temp2);
+   temp3 = resDate[q].slice(8,11);
+   //document.write(temp3);
+   resDate2[q]= temp2 + '-' + temp3;
+   //document.write(resDate2[q]);
+ }
+  resDate1 = resDate2.reverse();
+ resSMA1 = resSMA.map(parseFloat).reverse();
+ resSMA2 = resStoch.map(parseFloat).reverse();
+ resSMA3 = resFinal.map(parseFloat).reverse();
+ //document.write(resSMA);
+
+
+      new Highcharts.Chart({
+        chart: {
+            renderTo: document.getElementsByClassName("container")[0]
+
+        },
+         title: {
+            text: 'Moving Average Convergence/Divergence (MACD)'
+        },
+        subtitle: {
+
+            text: '<a href="https://www.alphavantage.co/">Source: Aplha Vantage </a>'
+        },
+        plotOptions: {
+    series: {
+        marker: {
+            enabled: true,
+            symbol: 'circle',
+            radius: 2
+        }
+    }
+},
+
+        yAxis: {
+         tickInterval : 1,
+
+        labels: {
+
+            style: {
+                color: Highcharts.getOptions().colors[1],
+
+            }
+        },
+        title: {
+
+            text: 'MACD',
+            style: {
+                color: Highcharts.getOptions().colors[1]
+            }
+        }
+        //min:100,
+        //tickInterval: 8
+
+    },
+    legend: {
+
+        align: 'center',
+        verticalAlign: 'bottom',
+        x: 0,
+
+        y: 0,
+        floating: false,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+    },
+
+        xAxis: {
+        //type: 'datetime',
+
+        //allowDecimals: true,
+        rotation: 45,
+        tickInterval: 5,
+        categories: resDate2
+
+    },
+
+
+        series: [{
+            type: 'line',
+            name: myjsvar + ' MACD_Hist',
+            color: '#ff8080',
+
+            data: resSMA1
+
+
+        },
+        {
+            type: 'line',
+            name: myjsvar + ' MACD',
+            color: '#0000ff',
+
+            data: resSMA2
+
+
+        },{
+            type: 'line',
+            name: myjsvar +' MACD_Signal',
+            color: 'black',
+
+            data: resSMA3
+
+
+        }]
+    });
+
+   }
+   }
+
+
+	</script>
+</head>
+<body>
+<div class="container"></div>
+
+</body>
+</html>

@@ -1,0 +1,181 @@
+<html>
+<head>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    <script>
+
+		function makevar(a){
+			var xmlhttp = new XMLHttpRequest();
+			var url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="+a+"&apikey=BVFQG1A5Y8XQTOQG&outputsize=full";
+			xmlhttp.onreadystatechange = function() {
+			   //document.write(var4);
+			    if (this.readyState == 4 && this.status == 200) {
+
+			        var arr = JSON.parse(this.responseText);
+			        makehist(arr,a);
+			    }
+			}
+
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send();
+
+
+		}
+		function makehist(arr,b){
+			var a = arr['Time Series (Daily)'];
+    var dates = Object.keys(a);
+    //$scope.searchResult3 = dates;
+
+    dates1 = [];
+    dates2 = [];
+    for(each in a){
+
+      //$scope.searchResult3 = a[each]['4. close'];
+      dates1.push(a[each]['4. close']);
+      dates2.push(a[each]['5. volume']);
+
+    }
+
+     resDate = dates.slice(0,120);
+ resSMA = dates1.slice(0,120);
+ resVolume = dates2.slice(0,120);
+ resDate1 = [];
+ resSMA1 = [];
+ resDate2=[];
+
+ for(q=0;q<resDate.length;q++){
+   temp2 = resDate[q].slice(5,7);
+   temp3 = resDate[q].slice(8,11);
+   resDate2[q]= temp2 + '/' + temp3;
+
+ }
+  resDate1 = resDate2.reverse();
+ resSMA1 = resSMA.map(parseFloat).reverse();
+ resVolume1 = resVolume.map(parseFloat).reverse();
+ //console.log(resDate1);
+  new Highcharts.Chart({
+        chart: {
+            renderTo: document.getElementsByClassName("cont3")[0],
+            type: 'line',
+            zoomType: 'x',
+            panning: true,
+            panKey: 'shift'
+
+        },
+         title: {
+            text: b+ ' Stock Price and Volume'
+        },
+        subtitle: {
+
+            text: '<a href="https://www.alphavantage.co/">Source: Aplha Vantage </a>'
+        },
+
+
+        xAxis: {
+
+        rotation: 45,
+        tickInterval: 5,
+        categories: resDate1
+
+    },
+
+
+        yAxis: [{
+
+        title: {
+
+            text: 'Stock Price',
+
+        },
+        tickInterval: 5,
+
+       // min: firstMin,
+        //max: firstMax
+
+
+
+    }, { // Secondary yAxis
+
+
+        title: {
+
+            text: 'Volume',
+
+        },
+        tickInterval: 80000000,
+        //min: secondMin,
+        //max: secondMax,
+
+        opposite: true
+
+    }],
+
+    legend: {
+
+        align: 'center',
+        verticalAlign: 'bottom',
+        x: 0,
+
+        y: 0,
+        floating: false,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+    },
+    plotOptions: {
+      series:{
+        stacking: 'normal'
+      }
+    },
+     plotOptions: {
+              series : {
+                 stacking: 'normal'
+              },
+              area: {
+                  marker: {
+                      radius: 1
+                  },
+                  lineWidth: 2,
+                  states: {
+                      hover: {
+                          lineWidth: 1
+                      }
+                  },
+                  threshold: null
+              }
+          },
+
+        series: [{
+            type: 'area',
+
+            color: '#ff8080',
+            name: ' Price',
+            data: resSMA1
+
+
+
+        },
+        {
+            type: 'column',
+            color: '#fff',
+            name: ' Volume',
+            data: resVolume1,
+            yAxis: 1
+
+        }]
+    });
+
+
+
+
+		}
+
+	</script>
+</head>
+
+
+<body>
+<div class="cont3"></div>
+
+
+
+</body>
+</html>

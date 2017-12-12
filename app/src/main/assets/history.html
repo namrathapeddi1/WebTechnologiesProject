@@ -1,0 +1,162 @@
+<html>
+<head>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    <script>
+
+		function makevar(a){
+			var xmlhttp = new XMLHttpRequest();
+			var url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="+a+"&apikey=BVFQG1A5Y8XQTOQG&outputsize=full";
+			xmlhttp.onreadystatechange = function() {
+			   //document.write(var4);
+			    if (this.readyState == 4 && this.status == 200) {
+
+			        var arr = JSON.parse(this.responseText);
+			        makehist(arr,a);
+			    }
+			}
+
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send();
+
+
+		}
+		function makehist(arr,b){
+			var a =  arr["Time Series (Daily)"];
+			var dates = Object.keys(a);
+    //$scope.searchResult3 = dates;
+
+    dates1 = [];
+    for(each in a){
+
+      //$scope.searchResult3 = a[each]['4. close'];
+      dates1.push(a[each]['4. close']);
+      //dates2.push(a[each]['5. volume']);
+
+
+    }
+
+    resDate1 = [];
+ resSMA1 = [];
+ resDate2=[];
+
+    for(q=0;q<dates.length;q++){
+   temp2 = dates[q].slice(5,7);
+   temp3 = dates[q].slice(8,11);
+   resDate2[q]= temp2 + '/' + temp3;
+
+ }
+  resDate1 = dates.reverse();
+  //resDate1 = resDate2.map(parseFloat);
+ resSMA1 = dates1.map(parseFloat).reverse();
+ //resVolume1 = dates2.map(parseFloat);
+
+ //var x = new Array(dates.length);
+ //for (var j = 0; j < dates.length; j++) {
+  //x[j] = new Array(2);
+//}
+x=[];
+ for(i=0;i<resDate1.length;i++){
+  timestamp = Date.parse(resDate1[i]);
+  //dates[i] = String(dates[i]);
+  //x[i][0] = dates[i];
+
+  //x[i][1] = resSMA1[i];
+  x.push([timestamp, resSMA1[i]]);
+  //console.log(x[i][0],x[i][1]);
+ }
+ //console.log(resDate1);
+ new Highcharts.StockChart({
+
+
+
+      rangeSelector: {
+
+      allButtonsEnabled: true,
+      selected: 0,
+
+      buttons: [{
+        type: 'week',
+        count: 1,
+        text: '1w'
+
+      },
+
+      {
+        type: 'month',
+        count: 1,
+        text: '1m',
+
+      }, {
+        type: 'month',
+        count: 3,
+        text: '3m'
+      }, {
+        type: 'month',
+        count: 6,
+        text: '6m'
+      }, {
+        type: 'ytd',
+        text: 'YTD'
+      }, {
+        type: 'year',
+        count: 1,
+        text: '1y'
+      }, {
+        type: 'all',
+        text: 'All'
+      }]
+},
+
+        title: {
+            text:  b + ' Stock Price'
+        },
+        subtitle: {
+
+            text: '<a href="https://www.alphavantage.co/" target="_blank">Source: Aplha Vantage </a>'
+        },
+
+        series: [{
+            name: 'AAPL',
+            type: 'area',
+            data: x,
+            tooltip: {
+                valueDecimals: 2
+            },
+            fillColor: {
+                linearGradient: {
+                    x1: 0,
+                    y1: 0,
+                    x2: 0,
+                    y2: 0
+                },
+                stops: [
+                    [0, Highcharts.getOptions().colors[0]],
+                    [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                ]
+            }
+        }],
+        chart: {
+            renderTo: document.getElementsByClassName("cont4")[0]
+
+
+        }
+
+  });
+
+
+
+
+
+		}
+
+	</script>
+</head>
+
+
+<body>
+<div class="cont4"></div>
+
+
+</body>
+</html>
